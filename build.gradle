@@ -1,0 +1,139 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'base'
+    id 'org.jetbrains.kotlin.jvm' version '1.2.60'
+    id "io.qameta.allure" version "2.5"
+}
+
+
+ext {
+    junitPlatformVersion = '1.3.1'
+    junitJupiterVersion = '5.3.1'
+    allureVersion = '2.7.0'
+}
+
+allure {
+    version = "$allureVersion"
+    autoconfigure = true
+    aspectjweaver = true
+    aspectjVersion = '1.8.10'
+    //resultsDir = file("${rootDir}/build/allure-results")
+    //reportDir = file("${rootDir}/allure-report")
+    useJUnit5 {
+        version = "${allureVersion}"
+    }
+    downloadLink = "https://dl.bintray.com/qameta/generic/io/qameta/allure/allure/$allureVersion/allure-${allureVersion}.zip"
+}
+
+
+group 'com.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+
+dependencies {
+    testCompileOnly(
+            'junit:junit:4.12'
+    )
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test-junit5', version: '1.2.61'
+
+    // Junit Jupiter
+    testImplementation(
+            "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion",   // JUnit Jupiter API for writing tests and extensions.
+            "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion" // Support for parameterized tests in JUnit Jupiter.
+    )
+    compile (
+            "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion",
+            "org.junit.vintage:junit-vintage-engine:$junitJupiterVersion",
+            "org.junit.platform:junit-platform-launcher:$junitPlatformVersion",
+            "org.junit.platform:junit-platform-runner:$junitPlatformVersion"
+    )
+    compile(
+            // Junit Platform dependences
+            ["org.junit.platform:junit-platform-engine:$junitPlatformVersion"],
+            ["org.junit.platform:junit-platform-console:$junitPlatformVersion"],
+            ["org.junit.platform:junit-platform-commons:$junitPlatformVersion"],
+            ["org.junit.platform:junit-platform-suite-api:$junitPlatformVersion"],
+            // Allure for Juni5
+            ['io.qameta.allure:allure-gradle:2.5'],
+            ["io.qameta.allure:allure-junit5:$allureVersion"],
+            ["io.qameta.allure:allure-selenide:$allureVersion"],
+            //Test Frameworks
+            ["com.codeborne:selenide:5.0.0"],
+            //Helper assertion library
+            // https://github.com/npryce/hamkrest
+            ["com.natpryce:hamkrest:1.6.0.0"]
+    )
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+}
+
+
+
+
+
+import io.qameta.allure.gradle.task.AllureReport
+task allureAggregatedReport(type: AllureReport) {
+    allure.resultsDir
+}
+
+
+
+// Enabled Native JUnit 5 support for Gradle 4.6+
+test {
+    //useJUnitPlatform()
+    useJUnitPlatform{
+        includeTags 'fast' //, 'smoke & feature-a'
+        excludeTags 'slow'
+        // excludeTags 'slow', 'ci'
+        includeEngines 'junit-jupiter'
+        //excludeEngines 'junit-vintage'
+    }
+    failFast = true
+    testLogging {
+        showStandardStreams = true
+        events 'PASSED', 'FAILED', 'SKIPPED'
+    }
+    afterSuite { desc, result ->
+        if (!desc.parent) {
+            println "\nTest result: ${result.resultType}"
+            println "Test summary: ${result.testCount} tests, " +
+                    "${result.successfulTestCount} succeeded, " +
+                    "${result.failedTestCount} failed, " +
+                    "${result.skippedTestCount} skipped"
+        }
+    }
+    //System variables and properties
+    // ...
+    systemProperty 'junit.jupiter.conditions.deactivate', '*'
+    systemProperties = [
+            'junit.jupiter.extensions.autodetection.enabled': 'true',
+            'junit.jupiter.testinstance.lifecycle.default' : 'per_class',
+    ]
+    // Also you can configure this properties in /src/test/ersource/junit-platform.properties file
+    // ...
+}.finalizedBy allureAggregatedReport
+
+
+
+
+clean.doFirst {
+    delete "${rootDir}/allure-results"
+    delete "${rootDir}/allure-report"
+    delete "${rootDir}/target"
+    delete "${rootDir}/build"
+    delete "${rootDir}/video"
+    delete "${rootDir}/out"
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
