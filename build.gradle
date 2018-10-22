@@ -125,7 +125,7 @@ test {
 clean.doFirst {
     delete "${rootDir}/allure-results"
     delete "${rootDir}/allure-report"
-    delete "${rootDir}/target"
+    delete "${rootDir}/bin"
     delete "${rootDir}/build"
     delete "${rootDir}/video"
     delete "${rootDir}/out"
