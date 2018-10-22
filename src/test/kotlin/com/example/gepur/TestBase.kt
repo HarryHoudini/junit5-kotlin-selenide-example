@@ -1,27 +1,34 @@
-package com.example.flow_tests.ui
+package com.example.gepur
 
 import com.codeborne.selenide.Configuration.*
-import com.exmple.electric_flow.extensions.Extensions
+import com.exmple.gepur.extensions.Extensions
+import com.exmple.gepur.models.pages.LoginPage
+import com.exmple.gepur.models.pages.MainPage
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 
 
 open class TestBase: Extensions(){
 
+    var mainPage: MainPage = MainPage()
+    var loginPage: LoginPage = LoginPage()
 
     companion object {
         @BeforeAll
         @JvmStatic
-        fun beforeAllTestCases() {
+        fun setUp() {
             println("Runs once before all test cases.")
-            baseUrl = "https://10.200.1.156"
+            baseUrl = "http://gepur.com"
             browser = "chrome"
             startMaximized = true
+
+
+
         }
 
         @AfterAll
         @JvmStatic
-        fun afterAllTestCases() {
+        fun tearDown() {
             println("Runs once after all test cases.")
         }
     }

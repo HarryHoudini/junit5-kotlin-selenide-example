@@ -1,7 +1,6 @@
 plugins {
     id 'java'
     id 'idea'
-    id 'base'
     id 'org.jetbrains.kotlin.jvm' version '1.2.60'
     id "io.qameta.allure" version "2.5"
 }
@@ -15,15 +14,20 @@ ext {
 
 allure {
     version = "$allureVersion"
+
     autoconfigure = true
+    configuration = 'compile'
+
     aspectjweaver = true
     aspectjVersion = '1.8.10'
-    //resultsDir = file("${rootDir}/build/allure-results")
-    //reportDir = file("${rootDir}/allure-report")
+
+    resultsDir = file("${rootDir}/build/allure-results")
+    reportDir = file("${rootDir}/allure-report")
     useJUnit5 {
         version = "${allureVersion}"
     }
     downloadLink = "https://dl.bintray.com/qameta/generic/io/qameta/allure/allure/$allureVersion/allure-${allureVersion}.zip"
+
 }
 
 
@@ -37,11 +41,12 @@ repositories {
 
 
 dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test-junit5', version: '1.2.61'
+    testCompile 'io.kotlintest:kotlintest-runner-junit5:3.1.8'
     testCompileOnly(
             'junit:junit:4.12'
     )
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test-junit5', version: '1.2.61'
 
     // Junit Jupiter
     testImplementation(
@@ -71,8 +76,13 @@ dependencies {
             ["com.natpryce:hamkrest:1.6.0.0"]
     )
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+
 }
 
+
+task wrapper (type: Wrapper){
+    gradleVersion = "4.8"
+}
 
 
 

@@ -1,46 +1,35 @@
 package com.example.gepur
 
-import com.codeborne.selenide.Condition
 import com.codeborne.selenide.Condition.*
 import com.codeborne.selenide.Configuration
 import com.codeborne.selenide.Configuration.*
-import com.example.flow_tests.api.main
-import com.exmple.gepur.extensions.Extensions
+import com.codeborne.selenide.WebDriverRunner
 import com.exmple.gepur.models.pages.LoginPage
-import com.exmple.gepur.models.pages.MainPage
 import com.exmple.gepur.models.stuff.User
-import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.BeforeAll
+import com.natpryce.hamkrest.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.RegisterExtension
+import com.natpryce.hamkrest.assertion.*
+
+class LoginTests: TestBase() {
+
+    @RegisterExtension
+    val user = User(firstName = "Savva", lastName = "Genchevskiy", email = "genchevskiy.gepur@gmail.com", password = "S.genchevskiy19021992")
 
 
-class LoginTests: Extensions() {
-
-
-    var mainPage: MainPage = MainPage()
-    var loginPage: LoginPage = LoginPage()
-
-    companion object {
-        @BeforeAll
-        @JvmStatic
-        fun setUp() {
-            println("Runs once before all test cases.")
-            baseUrl = "http://gepur.com"
-            browser = "chrome"
-            startMaximized = true
-
-
-
-        }
-
-        @AfterAll
-        @JvmStatic
-        fun tearDown() {
-            println("Runs once after all test cases.")
-        }
+    @Test
+    fun `Login test`(){
+        val mainPage = LoginPage().open().loginAs(user)
+        mainPage.accountButton.should.be.visible
+        mainPage.accountButton.highlight().should.have.text(user.username)
+        assert.that(
+                WebDriverRunner.getWebDriver().currentUrl, equalTo("${baseUrl}${mainPage.url}")
+                and startsWith(baseUrl)
+                and endsWith(mainPage.url)
+                and containsSubstring(mainPage.url)
+                and !containsSubstring("test")
+        )
     }
-
-
 
     @Test
     fun positiveLogin(){

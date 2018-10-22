@@ -1,7 +1,6 @@
 package com.exmple.gepur.extensions.elements
 
 import com.codeborne.selenide.*
-import com.exmple.electric_flow.extensions.ElementExtension
 import org.openqa.selenium.By
 
 

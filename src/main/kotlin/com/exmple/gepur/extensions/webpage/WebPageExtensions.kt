@@ -29,10 +29,15 @@ interface WebPageExtensions {
         return this
     }
 
-    fun WebPage.open(url: String): WebPage {
+    fun WebPage.openPage(url: String): WebPage {
         Selenide.open(url)
         return this
     }
+
+    fun <T: WebPage> T.open(url: String): T{
+        return Selenide.open(url, this.javaClass)
+    }
+
 
 
     fun <T: WebPage> T.shouldBeOpened(): T{
@@ -46,7 +51,7 @@ interface WebPageExtensions {
     }
 
     fun <T: WebPage> T.shouldHaveTitle(title: String): T{
-        assertEquals(title, WebDriverRunner.getWebDriver().currentUrl)
+        assertEquals(title, WebDriverRunner.getWebDriver().title)
         return this
     }
 

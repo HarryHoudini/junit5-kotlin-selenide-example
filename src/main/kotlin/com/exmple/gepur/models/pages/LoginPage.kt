@@ -15,8 +15,7 @@ class LoginPage : WebPage(){
 
     @Step
     fun open(): LoginPage{
-        open(this.url)
-        return this
+        return open(this.url)
     }
 
     @Step
