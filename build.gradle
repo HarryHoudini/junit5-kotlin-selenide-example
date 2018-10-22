@@ -43,7 +43,11 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test-junit5', version: '1.2.61'
-    testCompile 'io.kotlintest:kotlintest-runner-junit5:3.1.8'
+    // KotlinTest Framework
+    testCompile group: 'io.kotlintest', name: 'kotlintest-runner-junit5', version: '3.1.10'
+    compile group: 'io.kotlintest', name: 'kotlintest-extensions-allure', version: '3.1.10'
+    compile group: 'io.kotlintest', name: 'kotlintest-assertions', version: '3.1.10'
+
     testCompileOnly(
             'junit:junit:4.12'
     )

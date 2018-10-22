@@ -9,6 +9,7 @@ import com.exmple.gepur.models.pages.MainPage
 import com.exmple.gepur.models.stuff.User
 import io.kotlintest.*
 import io.kotlintest.extensions.TestListener
+import io.kotlintest.properties.assertAll
 import io.kotlintest.specs.AnnotationSpec
 import io.kotlintest.specs.StringSpec
 import org.junit.jupiter.api.BeforeAll
@@ -40,7 +41,10 @@ class LoginSpec: StringSpec(), TestListener {
                         .accountButton.shouldBeVisible()
                         .shouldHave(text(user.lastName))
             }
-
+            assertSoftly {
+                mainPage.accountButton.isDisplayed
+                mainPage.accountButton.text == user.lastName
+            }
         }
     }
 
