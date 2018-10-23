@@ -1,21 +1,18 @@
-package com.example.specs
+package com.example.kotlin_test
 
-import com.codeborne.selenide.Condition
 import com.codeborne.selenide.Condition.*
 import com.codeborne.selenide.Configuration.baseUrl
-import com.codeborne.selenide.logevents.SelenideLogger
+import com.exmple.gepur.extensions.kotlin_extensions.*
 import com.exmple.gepur.models.pages.LoginPage
 import com.exmple.gepur.models.pages.MainPage
 import com.exmple.gepur.models.stuff.User
 import io.kotlintest.*
 import io.kotlintest.extensions.TestListener
-import io.kotlintest.properties.assertAll
 import io.kotlintest.specs.AnnotationSpec
 import io.kotlintest.specs.StringSpec
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
-
 
 
 class LoginSpec: StringSpec(), TestListener {

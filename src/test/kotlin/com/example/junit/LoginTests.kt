@@ -1,7 +1,6 @@
-package com.example.gepur
+package com.example.junit
 
 import com.codeborne.selenide.Condition.*
-import com.codeborne.selenide.Configuration
 import com.codeborne.selenide.Configuration.*
 import com.codeborne.selenide.WebDriverRunner
 import com.exmple.gepur.models.pages.LoginPage
@@ -29,6 +28,8 @@ class LoginTests: TestBase() {
                 and containsSubstring(mainPage.url)
                 and !containsSubstring("test")
         )
+
+        loginPage.open().loginWith(user)
     }
 
     @Test

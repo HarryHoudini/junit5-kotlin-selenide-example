@@ -1,4 +1,4 @@
-package com.exmple.gepur.extensions.elements
+package com.exmple.gepur.extensions.object_extensions
 
 import com.codeborne.selenide.*
 import org.openqa.selenium.By

@@ -1,4 +1,4 @@
-package com.exmple.gepur.models.pages
+package com.exmple.gepur.models.elements
 
 import com.exmple.gepur.extensions.Extensions
 import com.codeborne.selenide.Selectors.*

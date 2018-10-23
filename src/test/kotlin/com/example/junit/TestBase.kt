@@ -1,4 +1,4 @@
-package com.example.gepur
+package com.example.junit
 
 import com.codeborne.selenide.Configuration.*
 import com.exmple.gepur.extensions.Extensions

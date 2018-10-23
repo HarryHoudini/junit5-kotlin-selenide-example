@@ -1,10 +1,14 @@
 package com.exmple.gepur.models.pages
 
+import com.exmple.gepur.extensions.kotlin_extensions.*
+import com.exmple.gepur.extensions.kotlin_extensions.step
+
 import com.exmple.gepur.models.stuff.User
 import io.qameta.allure.Step
 
 
 class LoginPage : WebPage(){
+
 
     override val url: String = "/auth/login"
     override val title: String = "Введите свой логин и пароль на Gepur"
@@ -24,6 +28,14 @@ class LoginPage : WebPage(){
         passwordFiled.setValue(user.password).submit()
         return MainPage()
     }
+
+    fun loginWith(user: User): LoginPage {
+        return step("login with user: $user"){
+            emailField.value = user.email
+            passwordFiled.vaL(user.password).submit()
+        }
+    }
+
 
 
 

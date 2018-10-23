@@ -1,6 +1,7 @@
 package com.exmple.gepur.models.pages
 
 import com.codeborne.selenide.Selectors.*
+import com.exmple.gepur.extensions.kotlin_extensions.s
 
 class MainPage: WebPage() {
     override val url: String = "/"

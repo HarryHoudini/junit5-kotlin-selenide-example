@@ -1,4 +1,4 @@
-package com.exmple.gepur.extensions.webpage
+package com.exmple.gepur.extensions.object_extensions
 
 import com.codeborne.selenide.Selenide
 import com.codeborne.selenide.WebDriverRunner
@@ -54,7 +54,6 @@ interface WebPageExtensions {
         assertEquals(title, WebDriverRunner.getWebDriver().title)
         return this
     }
-
 
     @Step("{0}")
     fun step(title: String, code: ()-> Any) = code()
