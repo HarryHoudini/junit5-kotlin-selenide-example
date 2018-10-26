@@ -1,25 +1,119 @@
 plugins {
-    id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.2.71'
+    id "io.qameta.allure" version "2.5"
+    id "io.franzbecker.gradle-lombok" version "1.14"
 }
 
-group 'com.example'
-version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
+ext {
+    allureVersion = '2.7.0'
+    restAssuredVersion = '3.1.1'
+    jaksonCoreVersion = '2.9.6'
 }
+
+
+allure {
+    version = "$allureVersion"
+
+    autoconfigure = true
+    configuration = 'compile'
+
+    aspectjweaver = true
+    aspectjVersion = '1.8.10'
+
+    resultsDir = file("${rootDir}/build/allure-results")
+    reportDir = file("${rootDir}/allure-report")
+    useJUnit5 {
+        version = "${allureVersion}"
+    }
+    downloadLink = "https://dl.bintray.com/qameta/generic/io/qameta/allure/allure/$allureVersion/allure-${allureVersion}.zip"
+
+}
+
+
+
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    compile(
+            //Test Framework
+            ["io.rest-assured:rest-assured:$restAssuredVersion"],
+            ["io.rest-assured:json-path:$restAssuredVersion"],
+            ["io.rest-assured:xml-path:$restAssuredVersion"],
+            ["io.rest-assured:json-schema-validator:$restAssuredVersion"],
+            // Json Libraries
+            ['org.json:json:20180813'],
+            ["com.fasterxml.jackson.core:jackson-databind:$jaksonCoreVersion"],
+            ["com.fasterxml.jackson.core:jackson-core:$jaksonCoreVersion"],
+            // Allure
+            ["io.qameta.allure:allure-rest-assured:${allureVersion}"],
+            // Helper libraries
+            ["org.projectlombok:lombok:1.18.2"],
+            ["com.github.javafaker:javafaker:0.16"]
+    )
+    //Logging
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    compile group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
+
 }
 
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+
+task wrapper (type: Wrapper){
+    gradleVersion = "4.8"
 }
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+
+
+
+
+import io.qameta.allure.gradle.task.AllureReport
+task allureAggregatedReport(type: AllureReport) {
+    allure.resultsDir
+}
+
+
+
+// Enabled Native JUnit 5 support for Gradle 4.6+
+test {
+    //useJUnitPlatform()
+    useJUnitPlatform{
+        includeTags 'fast' //, 'smoke & feature-a'
+        excludeTags 'slow'
+        // excludeTags 'slow', 'ci'
+        includeEngines 'junit-jupiter'
+        //excludeEngines 'junit-vintage'
+    }
+    failFast = true
+    testLogging {
+        showStandardStreams = true
+        events 'PASSED', 'FAILED', 'SKIPPED'
+    }
+    afterSuite { desc, result ->
+        if (!desc.parent) {
+            println "\nTest result: ${result.resultType}"
+            println "Test summary: ${result.testCount} tests, " +
+                    "${result.successfulTestCount} succeeded, " +
+                    "${result.failedTestCount} failed, " +
+                    "${result.skippedTestCount} skipped"
+        }
+    }
+    //System variables and properties
+    // ...
+    systemProperty 'junit.jupiter.conditions.deactivate', '*'
+    systemProperties = [
+            'junit.jupiter.extensions.autodetection.enabled': 'true',
+            'junit.jupiter.testinstance.lifecycle.default' : 'per_class',
+    ]
+    // Also you can configure this properties in /src/test/ersource/junit-platform.properties file
+    // ...
+}.finalizedBy allureAggregatedReport
+
+
+
+
+clean.doFirst {
+    delete "${rootDir}/allure-results"
+    delete "${rootDir}/allure-report"
+    delete "${rootDir}/bin"
+    delete "${rootDir}/build"
+    delete "${rootDir}/video"
+    delete "${rootDir}/out"
 }

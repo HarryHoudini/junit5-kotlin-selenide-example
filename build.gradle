@@ -2,7 +2,6 @@ plugins {
     id 'java'
     id 'idea'
     id 'org.jetbrains.kotlin.jvm' version '1.2.60'
-    id "io.qameta.allure" version "2.5"
 }
 
 
@@ -12,32 +11,97 @@ ext {
     allureVersion = '2.7.0'
 }
 
-allure {
-    version = "$allureVersion"
 
-    autoconfigure = true
-    configuration = 'compile'
 
-    aspectjweaver = true
-    aspectjVersion = '1.8.10'
+allprojects {
 
-    resultsDir = file("${rootDir}/build/allure-results")
-    reportDir = file("${rootDir}/allure-report")
-    useJUnit5 {
-        version = "${allureVersion}"
+    apply plugin: 'java'
+    apply plugin: 'kotlin'
+    apply plugin: 'idea'
+
+    repositories {
+        mavenCentral()
+        jcenter()
     }
-    downloadLink = "https://dl.bintray.com/qameta/generic/io/qameta/allure/allure/$allureVersion/allure-${allureVersion}.zip"
+
+    dependencies {
+        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+        testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test-junit5', version: '1.2.61'
+        // KotlinTest Framework
+        testCompile group: 'io.kotlintest', name: 'kotlintest-runner-junit5', version: '3.1.10'
+        compile group: 'io.kotlintest', name: 'kotlintest-extensions-allure', version: '3.1.10'
+        compile group: 'io.kotlintest', name: 'kotlintest-assertions', version: '3.1.10'
+
+        testCompileOnly(
+                'junit:junit:4.12'
+        )
+    }
+
+    compileKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
 
 }
 
 
-group 'com.example'
-version '1.0-SNAPSHOT'
+subprojects {
 
-repositories {
-    mavenCentral()
-    jcenter()
+    apply plugin: 'java'
+    apply plugin: 'kotlin'
+    apply plugin: 'idea'
+
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+
+    dependencies {
+        // Junit Jupiter
+        testImplementation(
+                "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion",   // JUnit Jupiter API for writing tests and extensions.
+                "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion" // Support for parameterized tests in JUnit Jupiter.
+        )
+        compile (
+                "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion",
+                "org.junit.vintage:junit-vintage-engine:$junitJupiterVersion",
+                "org.junit.platform:junit-platform-launcher:$junitPlatformVersion",
+                "org.junit.platform:junit-platform-runner:$junitPlatformVersion"
+        )
+        compile(
+                // Junit Platform dependences
+                ["org.junit.platform:junit-platform-engine:$junitPlatformVersion"],
+                ["org.junit.platform:junit-platform-console:$junitPlatformVersion"],
+                ["org.junit.platform:junit-platform-commons:$junitPlatformVersion"],
+                ["org.junit.platform:junit-platform-suite-api:$junitPlatformVersion"],
+                // Allure for Juni5
+                ['io.qameta.allure:allure-gradle:2.5'],
+                ["io.qameta.allure:allure-junit5:$allureVersion"],
+                ["io.qameta.allure:allure-selenide:$allureVersion"],
+                //Test Frameworks
+                ["com.codeborne:selenide:5.0.0"],
+                //Helper assertion library
+                // https://github.com/npryce/hamkrest
+                ["com.natpryce:hamkrest:1.6.0.0"],
+
+        )
+        //Logging
+        compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+
+    }
+
+
+
 }
+
+
+
+
+
 
 
 dependencies {
@@ -77,25 +141,17 @@ dependencies {
             ["com.codeborne:selenide:5.0.0"],
             //Helper assertion library
             // https://github.com/npryce/hamkrest
-            ["com.natpryce:hamkrest:1.6.0.0"]
+            ["com.natpryce:hamkrest:1.6.0.0"],
+
     )
-    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    //Logging
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
 
 }
-
 
 task wrapper (type: Wrapper){
     gradleVersion = "4.8"
 }
-
-
-
-
-import io.qameta.allure.gradle.task.AllureReport
-task allureAggregatedReport(type: AllureReport) {
-    allure.resultsDir
-}
-
 
 
 // Enabled Native JUnit 5 support for Gradle 4.6+
@@ -131,10 +187,7 @@ test {
     ]
     // Also you can configure this properties in /src/test/ersource/junit-platform.properties file
     // ...
-}.finalizedBy allureAggregatedReport
-
-
-
+}
 
 clean.doFirst {
     delete "${rootDir}/allure-results"
