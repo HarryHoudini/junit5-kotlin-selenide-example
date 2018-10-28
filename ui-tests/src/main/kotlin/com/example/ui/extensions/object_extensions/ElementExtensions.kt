@@ -1,9 +1,12 @@
-package com.exmple.gepur.extensions.object_extensions
+package com.example.ui.extensions.object_extensions
 
-import com.codeborne.selenide.*
+import com.codeborne.selenide.Condition
+import com.codeborne.selenide.Condition.*
+import com.codeborne.selenide.ElementsCollection
+import com.codeborne.selenide.Selenide
 import com.codeborne.selenide.Selenide.*
+import com.codeborne.selenide.SelenideElement
 import org.openqa.selenium.By
-
 
 interface ElementExtensions {
 
@@ -50,17 +53,17 @@ interface ElementExtensions {
     }
 
 
-    fun SelenideElement.shouldBeVisible(): SelenideElement = this.shouldBe(Condition.visible)
+    fun SelenideElement.shouldBeVisible(): SelenideElement = this.shouldBe(visible)
 
     fun SelenideElement.vaL(text: String): SelenideElement = this.`val`(text)
 
-    fun SelenideElement.s(cssLocator: String): SelenideElement = Selenide.`$`(cssLocator)
+    fun SelenideElement.s(cssLocator: String): SelenideElement = `$`(cssLocator)
 
     fun SelenideElement.ss(cssLocator: String): ElementsCollection = `$$`(cssLocator)
 
     fun SelenideElement.s(locator: By): SelenideElement = `$`(locator)
 
-    fun SelenideElement.ss(locator: By): ElementsCollection =  `$$`(locator)
+    fun SelenideElement.ss(locator: By): ElementsCollection = `$$`(locator)
 
 
     fun SelenideElement.highlight(color: String = "red"): SelenideElement {

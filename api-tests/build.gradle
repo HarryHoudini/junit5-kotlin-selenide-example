@@ -1,6 +1,6 @@
 plugins {
-    id "io.qameta.allure" version "2.5"
-    id "io.franzbecker.gradle-lombok" version "1.14"
+    id 'java'
+    id "io.qameta.allure" version "2.5" 
 }
 
 
@@ -47,20 +47,12 @@ dependencies {
             // Allure
             ["io.qameta.allure:allure-rest-assured:${allureVersion}"],
             // Helper libraries
-            ["org.projectlombok:lombok:1.18.2"],
             ["com.github.javafaker:javafaker:0.16"]
     )
     //Logging
-    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
-    compile group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
+    //compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
 
 }
-
-
-task wrapper (type: Wrapper){
-    gradleVersion = "4.8"
-}
-
 
 
 
@@ -107,13 +99,11 @@ test {
 }.finalizedBy allureAggregatedReport
 
 
-
-
 clean.doFirst {
+    delete "${rootDir}/.allure"
     delete "${rootDir}/allure-results"
     delete "${rootDir}/allure-report"
     delete "${rootDir}/bin"
     delete "${rootDir}/build"
-    delete "${rootDir}/video"
     delete "${rootDir}/out"
 }

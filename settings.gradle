@@ -1,2 +1,4 @@
 rootProject.name = 'junit5-kotlin-selenide-example'
 include 'api-tests'
+include 'ui-tests'
+
