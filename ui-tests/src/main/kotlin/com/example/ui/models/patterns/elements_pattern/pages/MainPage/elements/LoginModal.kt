@@ -17,7 +17,7 @@ class LoginModal(override val element: SelenideElement) : ElementContainer() {
     var passwordField = element.s("#password-modal")
     var loginButton = element.s("button[onclick='return login()']")
     var successMessage = element.s(byText("Login successful."))
-
+    var message = s("#login-message > div")
 
     @Step
     fun loginWith(user: User): MainPage {

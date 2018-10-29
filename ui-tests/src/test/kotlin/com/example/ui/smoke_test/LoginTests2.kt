@@ -1,4 +1,4 @@
-package com.example.ui
+package com.example.ui.smoke_test
 
 import com.codeborne.selenide.Condition
 import com.codeborne.selenide.Condition.*
@@ -22,18 +22,19 @@ import java.util.stream.Stream
 
 
 
-class LoginTests2: BaseTest() {
+class LoginTests2 {
 
-    @JvmField
+
     @RegisterExtension
     val mainPage = MainPage()
 
     @JvmField
     @RegisterExtension
     val user = User(firstName = "Savva", lastName = "Genchevskiy",
-            username = "savva.genchevskiy",
+            username = "savva.gench",
             email = "savva.genchevskiy@gmail.com",
             password =  "s.g19021992", id = "")
+
 
     @BeforeEach
     fun setUp(){
@@ -60,7 +61,8 @@ class LoginTests2: BaseTest() {
     @MethodSource("loginData")
     //@ArgumentsSource(PersonProvider::class)
     fun `should not login with invalid data`(user: User, message: String){
-        mainPage.open().login().loginWith(user)
+        mainPage.open().login()
+                .loginWith(user)
         mainPage.loginModal.errorMessage.shouldBe(visible).shouldHave(text(message))
     }
 

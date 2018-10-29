@@ -1,23 +1,31 @@
-package com.example.ui
+package com.example.ui.spec_tests
 
 import com.codeborne.selenide.Condition
 import com.codeborne.selenide.Condition.*
 import com.codeborne.selenide.Configuration
 import com.example.api.models.User
 import com.example.ui.extensions.kotlin_extensions.open
-import com.example.ui.models.patterns.kiss_pattern.MainPage
-import io.kotlintest.AbstractProjectConfig
+import com.example.ui.models.patterns.elements_pattern.pages.CatalogPage.CatalogPage
+import com.example.ui.models.patterns.elements_pattern.pages.MainPage.MainPage
 import io.kotlintest.Description
 import io.kotlintest.TestResult
 import io.kotlintest.data.forall
-import io.kotlintest.extensions.ProjectExtension
 import io.kotlintest.extensions.TestListener
-import io.kotlintest.properties.forAll
+import io.kotlintest.inspectors.forAtLeast
 import io.kotlintest.specs.StringSpec
 import io.kotlintest.tables.row
+import org.apache.commons.lang3.SystemUtils.IS_OS_LINUX
+import org.junit.jupiter.api.extension.RegisterExtension
+
 
 
 class LoginSpecs: StringSpec(), TestListener {
+
+
+    @JvmField
+    @RegisterExtension
+    val user = User(firstName = "Savva", lastName = "Genchevskiy", username = "savva.gench",
+                        email = "savva.genchevskiy@gmail.com", password =  "s.g19021992", id = "")
 
 
     override fun beforeTest(description: Description) {
@@ -28,27 +36,47 @@ class LoginSpecs: StringSpec(), TestListener {
     }
 
 
-
     init {
+
+        "should login user".config(enabled = IS_OS_LINUX){
+            MainPage().run {
+                open().login()
+                        .loginWith(user)
+                        .accountButton.shouldBe(visible)
+                        .shouldHave(text("Logged in as ${user.firstName} ${user.lastName}"))
+            }
+        }
 
         "should not login with invalid data"{
             forall(
                     row(User(firstName = "", lastName = "", username = "savva", email = "", password = "123", id = ""), "Invalid login credentials."),
                     row(User(firstName = "", lastName = "", username = "", email = "", password = "123", id = ""), "Invalid login credentials."),
                     row(User(firstName = "", lastName = "", username = "savva.genchevskiy@gmail.com", email = "", password = "123", id = ""), "Invalid login credentials."),
-                    row(User(firstName = "", lastName = "", username = "savva.genchevskiy", email = "", password = "123", id = ""), "Invalid login credentials!."),
+                    row(User(firstName = "", lastName = "", username = "savva.genchevskiy", email = "", password = "123", id = ""), "Invalid login credentials."),
                     row(User(firstName = "", lastName = "", username = "savva.genchevskiy", email = "", password = "123", id = ""), "Invalid login credentials.")
             ){ user: User, message: String ->
-                MainPage().open().login()
+                MainPage().open()
+                        .login()
                         .loginWith(user)
-                        .loginModal.errorMessage.shouldBe(visible).shouldHave(text(message))
+                        .loginModal.message.shouldBe(visible).shouldHave(text(message))
             }
 
         }
 
+
+        "should open catalog page"{
+            CatalogPage().run {
+                    open()
+                    productList.forAtLeast(4) {
+                        it.shouldBe(visible)
+                    }
+
+            }
+        }
 
     }
 
 
 
 }
+

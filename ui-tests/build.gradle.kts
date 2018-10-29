@@ -5,7 +5,6 @@ import io.qameta.allure.gradle.task.AllureReport
 import org.gradle.internal.impldep.org.eclipse.jgit.api.CleanCommand
 
 
-
 plugins {
     java
     `maven-publish`

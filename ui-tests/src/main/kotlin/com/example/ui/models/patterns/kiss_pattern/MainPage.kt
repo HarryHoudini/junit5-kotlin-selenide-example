@@ -6,8 +6,8 @@ import com.codeborne.selenide.Selectors
 import com.example.ui.extensions.kotlin_extensions.open
 import com.example.ui.extensions.kotlin_extensions.s
 import com.example.ui.models.WebPage
+import com.example.ui.models.patterns.elements_pattern.pages.MainPage.elements.RegistrationModal
 import com.example.ui.models.patterns.kiss_pattern.components.LoginModal
-import com.exmple.gepur.models.stuff.User
 
 class MainPage: WebPage() {
 
