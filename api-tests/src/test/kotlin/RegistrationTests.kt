@@ -13,6 +13,8 @@ import org.hamcrest.Matchers.notNullValue
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.extension.RegisterExtension
+import java.util.stream.Stream
+import kotlin.streams.toList
 
 class RegistrationTests: BaseTest(){
 
@@ -57,9 +59,6 @@ class RegistrationTests: BaseTest(){
                         .map { {assertTrue(it.email.endsWith(".com"))} }
         )
     }
-
-
-
 
 
 

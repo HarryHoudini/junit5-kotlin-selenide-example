@@ -59,7 +59,8 @@ class LoginTests2 {
 
     @ParameterizedTest
     @MethodSource("loginData")
-    //@ArgumentsSource(PersonProvider::class)
+    // @ArgumentsSource(PersonProvider::class)
+    // @ValueSource(strings = arrayOf("development", "test", "production"))
     fun `should not login with invalid data`(user: User, message: String){
         mainPage.open().login()
                 .loginWith(user)

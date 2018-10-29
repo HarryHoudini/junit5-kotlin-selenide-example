@@ -24,11 +24,6 @@ class AssertableResponse(val response: ValidatableResponse){
 
 
 
-
-
-
-
-
 // Implementation from  Condition object
 
 

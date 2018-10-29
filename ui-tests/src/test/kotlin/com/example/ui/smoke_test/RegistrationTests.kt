@@ -3,9 +3,7 @@ package com.example.ui.smoke_test
 import com.codeborne.selenide.Condition.*
 import com.example.api.models.User
 import com.example.ui.BaseTest
-import com.example.ui.extensions.kotlin_extensions.open
-import com.example.ui.extensions.kotlin_extensions.shouldBeOpened
-import com.example.ui.extensions.kotlin_extensions.shouldBeVisible
+import com.example.ui.extensions.kotlin_extensions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
@@ -30,11 +28,11 @@ class RegistrationTests: BaseTest() {
     fun `register user with correct creds`(){
         mainPage.register()
                 .registerWith(randomUser)
-                .registerModal.messageField.shouldBeVisible()
-                .shouldHave(text("Registration and login successful."))
+        mainPage.registerModal.messageField.should.be.visible
+        mainPage.registerModal.messageField.should.have.text("Registration and login successful.")
                 .shouldHave(attribute("class", "alert alert-success"))
-        mainPage.accountButton.shouldBe(visible)
-                .shouldHave(text("Logged in as ${randomUser.firstName} ${randomUser.lastName}"))
+        mainPage.accountButton.shouldBeVisible().shouldHave(text("Logged in as ${randomUser.firstName} ${randomUser.lastName}"))
+        mainPage.shouldBeOpened().shouldHaveTitle(mainPage.title)
     }
 
 
