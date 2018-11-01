@@ -16,6 +16,8 @@ import java.util.*
 open class BaseTest {
 
     val faker: Faker = Faker(Locale("en-US"))
+    val customerEmail = System.getProperty("EMAIL")
+    val customerPass = System.getProperty("PASS")
 
     @JvmField
     @RegisterExtension
@@ -28,8 +30,10 @@ open class BaseTest {
     @RegisterExtension
     val user = User(firstName = "Savva", lastName = "Genchevskiy",
             username = "savva.gench",
-            email = "savva.genchevskiy@gmail.com",
-            password =  "s.g19021992", id = "")
+            email = customerEmail ,
+            password =  customerPass, id = "")
+
+
 
 
     companion object {

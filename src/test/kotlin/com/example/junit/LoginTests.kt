@@ -13,7 +13,7 @@ import com.natpryce.hamkrest.assertion.*
 class LoginTests: TestBase() {
 
     @RegisterExtension
-    val user = User(firstName = "Savva", lastName = "Genchevskiy", email = "genchevskiy.gepur@gmail.com", password = "S.genchevskiy19021992")
+    val user = User(firstName = "Savva", lastName = "Genchevskiy", email = "******", password = "*****")
 
 
     @Test

@@ -25,15 +25,18 @@ import java.util.stream.Stream
 class LoginTests2 {
 
 
+    private val customerEmail = System.getProperty("EMAIL")!!
+    private val customerPass = System.getProperty("PASS")!!
+
     @RegisterExtension
     val mainPage = MainPage()
 
     @JvmField
     @RegisterExtension
     val user = User(firstName = "Savva", lastName = "Genchevskiy",
-            username = "savva.gench",
-            email = "savva.genchevskiy@gmail.com",
-            password =  "s.g19021992", id = "")
+            username = "savva.genchevskiy",
+            email = customerEmail,
+            password = customerPass, id = "")
 
 
     @BeforeEach

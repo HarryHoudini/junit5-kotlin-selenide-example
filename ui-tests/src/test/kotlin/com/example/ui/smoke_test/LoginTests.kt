@@ -29,8 +29,8 @@ class LoginTests: BaseTest(){
     fun `login test`(){
         val user = User(firstName = "Savva", lastName = "Genchevskiy",
                 username = "savva.genchevskiy",
-                email = "savva.genchevskiy@gmail.com",
-                password =  "s.g19021992", id = "")
+                email = customerEmail,
+                password = customerPass, id = "")
         val mainPage = MainPage()
                 .open()
                 .login()

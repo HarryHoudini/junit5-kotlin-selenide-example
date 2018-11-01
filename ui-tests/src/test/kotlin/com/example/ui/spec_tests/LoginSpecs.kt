@@ -22,10 +22,13 @@ import org.junit.jupiter.api.extension.RegisterExtension
 class LoginSpecs: StringSpec(), TestListener {
 
 
+    private val customerEmail = System.getProperty("EMAIL")!!
+    private val customerPass = System.getProperty("PASS")!!
+
     @JvmField
     @RegisterExtension
     val user = User(firstName = "Savva", lastName = "Genchevskiy", username = "savva.gench",
-                        email = "savva.genchevskiy@gmail.com", password =  "s.g19021992", id = "")
+                        email = customerEmail, password =  customerPass, id = "")
 
 
     override fun beforeTest(description: Description) {

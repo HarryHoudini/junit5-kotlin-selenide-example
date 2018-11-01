@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken
 import groovy.json.JsonBuilder
 import io.kotlintest.properties.assertAll
 import io.restassured.http.ContentType.*
+import io.restassured.response.ResponseBodyExtractionOptions
 import io.restassured.response.ValidatableResponse
 import org.hamcrest.Matchers.notNullValue
 import org.junit.jupiter.api.*
@@ -49,7 +50,7 @@ class RegistrationTests: BaseTest(){
 
     @Test
     fun `get customers`(){
-        val users = userApiService.getCustomers().extractAs(User::class.java)
+        val users = userApiService.getCustomers().extractUsers()
         assertTrue(users.isNotEmpty())
         assertEquals(users.filter{ it.username == "savva.gench"}.size, 1)
         assertAll("Users with emails ends on .com ",
@@ -58,17 +59,15 @@ class RegistrationTests: BaseTest(){
                 .map { { assertTrue(it.email.endsWith(".com")) } }
         )
     }
-
-
-
 }
 
 
 
-private fun ValidatableResponse.extractAs(java: Class<User>): List<User> {
+
+
+fun ValidatableResponse.extractAs(java: Class<User>): List<User> {
     return this.extract().body().`as`<List<User>>(java)
 }
-
 
 fun ValidatableResponse.extractAsUsers(path: String): List<User> {
     return Gson().fromJson<List<User>>(this.extract().body().jsonPath().getString(path) , object: TypeToken<List<User>>(){}.type)
