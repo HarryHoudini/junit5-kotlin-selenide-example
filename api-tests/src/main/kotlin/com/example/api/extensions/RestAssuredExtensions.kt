@@ -25,14 +25,6 @@ fun RequestSpecification.Given(): RequestSpecification = this.given()
 fun RequestSpecification.When(): RequestSpecification = this.`when`()
 
 
-
-fun ValidatableResponse.extractAsUsers(path: String): List<User> {
-    val gson = Gson()
-    return gson.fromJson<List<User>>(this.extract().body().jsonPath().getString(path) , object: TypeToken<List<User>>(){}.type)
-}
-
-
-
 fun usersFromJSONFile(filename: String): List<User> {
     val gson = Gson()
     return gson.fromJson<List<User>>(FileReader(filename), object: TypeToken<List<User>>(){}.type)
