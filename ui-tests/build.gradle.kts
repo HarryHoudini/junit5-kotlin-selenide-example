@@ -31,7 +31,6 @@ allure {
     downloadLink = "https://dl.bintray.com/qameta/generic/io/qameta/allure/allure/${allure.version}/allure-${allure.version}.zip"
 }
 
-
 repositories {
     mavenCentral()
     jcenter()
@@ -92,6 +91,8 @@ tasks {
         }
 
     }.finalizedBy("allureReport")
+
+    getByName<AllureReport>("allureReport")
 
 
     getByName("clean"){

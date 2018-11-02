@@ -4,6 +4,7 @@ import com.codeborne.selenide.Condition
 import com.codeborne.selenide.Condition.*
 import com.codeborne.selenide.Configuration
 import com.example.api.models.User
+import com.example.ui.BaseTest
 import com.example.ui.extensions.kotlin_extensions.*
 import com.example.ui.models.patterns.kiss_pattern.MainPage
 import org.junit.jupiter.api.AfterEach
@@ -16,27 +17,17 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import org.junit.jupiter.params.provider.Arguments.arguments
 import org.junit.jupiter.params.provider.ArgumentsProvider
-import org.junit.jupiter.params.provider.ArgumentsSource
-
 import java.util.stream.Stream
 
 
 
-class LoginTests2 {
 
 
-    private val customerEmail = System.getProperty("EMAIL")!!
-    private val customerPass = System.getProperty("PASS")!!
+class LoginTests2: BaseTest() {
+
 
     @RegisterExtension
-    val mainPage = MainPage()
-
-    @JvmField
-    @RegisterExtension
-    val user = User(firstName = "Savva", lastName = "Genchevskiy",
-            username = "savva.genchevskiy",
-            email = customerEmail,
-            password = customerPass, id = "")
+    val landingPage = MainPage()
 
 
     @BeforeEach
@@ -65,9 +56,9 @@ class LoginTests2 {
     // @ArgumentsSource(PersonProvider::class)
     // @ValueSource(strings = arrayOf("development", "test", "production"))
     fun `should not login with invalid data`(user: User, message: String){
-        mainPage.open().login()
+        landingPage.open().login()
                 .loginWith(user)
-        mainPage.loginModal.errorMessage.shouldBe(visible).shouldHave(text(message))
+        landingPage.loginModal.errorMessage.shouldBe(visible).shouldHave(text(message))
     }
 
 

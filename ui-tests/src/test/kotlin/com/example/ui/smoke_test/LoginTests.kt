@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test
 import com.example.api.models.User
 import com.example.ui.BaseTest
 import com.example.ui.extensions.kotlin_extensions.open
+import com.example.ui.extensions.kotlin_extensions.refresh
 import com.example.ui.extensions.kotlin_extensions.shouldBeOpened
 import com.example.ui.extensions.kotlin_extensions.shouldHaveUrl
 import com.example.ui.models.patterns.elements_pattern.pages.CatalogPage.CatalogPage
@@ -13,11 +14,11 @@ import com.example.ui.models.patterns.elements_pattern.pages.MainPage.MainPage
 import com.example.ui.models.patterns.elements_pattern.shouldBe
 import com.example.ui.models.patterns.elements_pattern.shouldHave
 import com.example.ui.models.patterns.elements_pattern.shouldHaveSize
+import io.kotlintest.should
 import org.junit.jupiter.api.BeforeEach
 
 
 class LoginTests: BaseTest(){
-
 
     @BeforeEach
     fun setUp(){
@@ -27,10 +28,6 @@ class LoginTests: BaseTest(){
 
     @Test
     fun `login test`(){
-        val user = User(firstName = "Savva", lastName = "Genchevskiy",
-                username = "savva.genchevskiy",
-                email = customerEmail,
-                password = customerPass, id = "")
         val mainPage = MainPage()
                 .open()
                 .login()
@@ -44,9 +41,12 @@ class LoginTests: BaseTest(){
 
     @Test
     fun `catalog test`(){
-        CatalogPage().open().products.shouldHave(sizeGreaterThan(1))
+        CatalogPage().open().refresh()
+                .products.shouldHave(sizeGreaterThan(1))
                 .filterBy(visible).shouldHaveSize(6)
     }
+
+
 
 
 }

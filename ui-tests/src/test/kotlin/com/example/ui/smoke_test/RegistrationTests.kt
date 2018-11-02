@@ -30,8 +30,9 @@ class RegistrationTests: BaseTest() {
                 .registerWith(randomUser)
         mainPage.registerModal.messageField.should.be.visible
         mainPage.registerModal.messageField.should.have.text("Registration and login successful.")
-                .shouldHave(attribute("class", "alert alert-success"))
-        mainPage.accountButton.shouldBeVisible().shouldHave(text("Logged in as ${randomUser.firstName} ${randomUser.lastName}"))
+                .shouldHaveClass("alert alert-success")
+        mainPage.accountButton.shouldBeVisible()
+                .shouldHave(text("Logged in as ${randomUser.firstName} ${randomUser.lastName}"))
         mainPage.shouldBeOpened().shouldHaveTitle(mainPage.title)
     }
 

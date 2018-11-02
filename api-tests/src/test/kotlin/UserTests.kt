@@ -41,6 +41,7 @@ class RegistrationTests: BaseTest(){
 
 
     @Test
+    @DisplayName("")
     fun `register User`(){
         userApiService.registerCustomer(randomUser)
                 .shouldHave.statusCode(200)

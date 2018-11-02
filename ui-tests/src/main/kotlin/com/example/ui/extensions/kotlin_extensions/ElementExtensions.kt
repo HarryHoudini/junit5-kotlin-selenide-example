@@ -6,6 +6,7 @@ import com.codeborne.selenide.ElementsCollection
 import com.codeborne.selenide.Selenide
 import com.codeborne.selenide.Selenide.*
 import com.codeborne.selenide.SelenideElement
+import io.kotlintest.shouldHave
 import org.openqa.selenium.By
 
 
@@ -67,6 +68,8 @@ fun SelenideElement.s(locator: By): SelenideElement = `$`(locator)
 fun SelenideElement.ss(locator: By): ElementsCollection = `$$`(locator)
 
 fun SelenideElement.Is(condition: Condition): Boolean = this.`is`(condition)
+
+fun SelenideElement.shouldHaveClass(classValue: String): SelenideElement = this.shouldHave(attribute("class", classValue))
 
 
 fun SelenideElement.highlight(color: String = "red"): SelenideElement {

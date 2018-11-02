@@ -63,6 +63,12 @@ fun <T: WebPage> T.shouldHaveTitle(title: String): T{
     return this
 }
 
+fun <T: WebPage> T.refresh(): T {
+    Selenide.refresh()
+    return this
+}
+
+
 
 @Step("{0}")
 fun step(title: String, code: ()-> Any) = code()

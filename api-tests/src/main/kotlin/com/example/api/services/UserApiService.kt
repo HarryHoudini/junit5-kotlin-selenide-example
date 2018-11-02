@@ -34,20 +34,23 @@ class UserApiService {
             = step("Register user: $javaUser"){ requestSpec.When().body(javaUser).post("register").then() }
 
     @Step
-    fun getCustomers(): ValidatableResponse = requestSpec.When().get("customers").then()
+    fun getCustomers(): ValidatableResponse
+            = requestSpec.When().get("customers").then()
 
     @Step
-    fun getCustomer(id: String): ValidatableResponse = requestSpec.When().get("customers/$id").then()
+    fun getCustomer(id: String): ValidatableResponse
+            = requestSpec.When().get("customers/$id").then()
 
     @Step
-    fun deleteCustomer(id: String): ValidatableResponse = requestSpec.When().delete("customers/$id").then()
+    fun deleteCustomer(id: String): ValidatableResponse
+            = requestSpec.When().delete("customers/$id").then()
 
     @Step
-    fun registerCustomer(user: User): ValidatableResponse = requestSpec.When().body(user).post("register").then()
+    fun registerCustomer(user: User): ValidatableResponse
+            = requestSpec.When().body(user).post("register").then()
 }
 
 
 
 @Step("{0}")
 fun step(title: String, code: ()-> ValidatableResponse) = code()
-

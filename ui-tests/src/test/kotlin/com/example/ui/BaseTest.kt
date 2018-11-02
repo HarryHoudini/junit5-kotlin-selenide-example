@@ -19,21 +19,14 @@ open class BaseTest {
     val customerEmail = System.getProperty("EMAIL")
     val customerPass = System.getProperty("PASS")
 
-    @JvmField
-    @RegisterExtension
     val mainPage = MainPage()
-
-    @RegisterExtension
     val catalogPage = CatalogPage()
 
-    @JvmField
     @RegisterExtension
     val user = User(firstName = "Savva", lastName = "Genchevskiy",
             username = "savva.gench",
             email = customerEmail ,
             password =  customerPass, id = "")
-
-
 
 
     companion object {
