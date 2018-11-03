@@ -92,8 +92,6 @@ tasks {
 
     }.finalizedBy("allureReport")
 
-    getByName<AllureReport>("allureReport")
-
 
     getByName("clean"){
         delete("$rootDir/ui-tests/.allure")
