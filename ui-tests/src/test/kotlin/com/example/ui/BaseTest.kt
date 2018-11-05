@@ -25,8 +25,8 @@ open class BaseTest {
     @RegisterExtension
     val user = User(firstName = "Savva", lastName = "Genchevskiy",
             username = "savva.gench",
-            email = customerEmail ,
-            password =  customerPass, id = "")
+            email = "" ,
+            password =  "s.g19021992", id = "")
 
 
     companion object {
