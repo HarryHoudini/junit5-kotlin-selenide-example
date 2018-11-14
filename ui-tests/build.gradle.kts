@@ -3,13 +3,20 @@
 import io.qameta.allure.gradle.AllureExtension
 import io.qameta.allure.gradle.task.AllureReport
 import org.gradle.internal.impldep.org.eclipse.jgit.api.CleanCommand
-
+import kotlin.io.*
 
 plugins {
     java
     `maven-publish`
+    application
+    kotlin("jvm")
     id("io.qameta.allure") version "2.5"
     // kotlin("jvm") version "1.2.60" -- Allready in the classpath
+}
+
+
+application {
+    mainClassName = ""
 }
 
 
@@ -38,13 +45,13 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib", "1.2.60"))
-    compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    compile("com.codeborne", "selenide", "5.0.0")
-    compile("io.qameta.allure:allure-selenide:${allure.version}")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("com.codeborne", "selenide", "5.0.0")
+    implementation("io.qameta.allure:allure-selenide:${allure.version}")
     //Helper assertion library
     // https://github.com/npryce/hamkrest
-    compile("com.natpryce:hamkrest:1.6.0.0")
-    compile(project(":api-tests"))
+    implementation("com.natpryce:hamkrest:1.6.0.0")
+    implementation(project(":api-tests"))
 }
 
 
@@ -53,13 +60,30 @@ dependencies {
 
 tasks.getByName<Wrapper>("wrapper").gradleVersion = "4.8"
 
-//
-//val wrapper by tasks.getting(Wrapper::class){
-//    gradleVersion = "4.8"
-//}
 
+val wrapper by tasks.getting(Wrapper::class){
+    gradleVersion = "4.8"
+}
+
+val test by tasks.getting(Test::class) {
+    // Use TestNG for unit tests
+    useTestNG()
+}
+
+tasks.create("testWithJunit", Test::class.java){
+    useJUnitPlatform {
+        includeTags("fast")
+    }
+}
 
 tasks {
+
+    "greeting" {
+        doLast {
+            println("Hello World!")
+        }
+
+    }
 
     getByName<Wrapper>("wrapper") {
         gradleVersion = "4.8"
