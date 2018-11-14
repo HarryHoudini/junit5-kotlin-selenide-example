@@ -23,6 +23,7 @@ class LoginTests:BaseTest() {
                 open()
                 loginWith(accounts.get(0))
             }
+
         } assertions {
             mainPage {
                 successMessage.should.be.visible

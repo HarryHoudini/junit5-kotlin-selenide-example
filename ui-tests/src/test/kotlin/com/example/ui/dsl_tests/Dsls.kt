@@ -168,13 +168,21 @@ class WebsiteContext {
 
     fun page(init: Page.() -> Unit) = Page().init()
 
+    fun assertions(init: AssertionsContext.() -> Unit) = AssertionsContext(this).init()
+
 }
 
 
 
 
 @MyCustomDslMarker
-class AssertionsContext(website: WebsiteContext)
+class AssertionsContext(website: WebsiteContext) {
+
+    fun website(init: WebsiteContext.() -> Unit): WebsiteContext = this.website(init)
+
+}
+
+
 
 infix fun WebsiteContext.assertions(init: WebsiteContext.() -> Unit) = this.init()
 
